@@ -1,0 +1,15 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+  
+  - name: Installing apache and php on all distributions
+    package:
+      name:
+        - "{{ apache_package }}"
+        - "{{ php_package }}"
+      state: latest
+      update_cache: true
+
+  # we then provide the variable definitions to each host in the inventory files
