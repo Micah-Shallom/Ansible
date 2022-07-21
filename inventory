@@ -1,12 +1,12 @@
 [web_servers]
-ubuntu@3.84.115.142
-ubuntu@50.16.22.22
+ubuntu@54.211.80.35
+ubuntu@54.84.237.123	
 
 [db_servers]
-ubuntu@34.205.18.4
+ubuntu@34.238.117.206
 
 [file_servers]
-ec2-user@107.23.250.40
+ec2-user@3.84.103.80
 
 <!-- ubuntu@3.84.115.142 apache_package=apache2 php_package=libapache2-mod-php
 ubuntu@50.16.22.22 apache_package=apache2 php_package=libapache2-mod-php
