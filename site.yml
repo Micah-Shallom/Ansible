@@ -7,16 +7,47 @@
   - name: Install updates on amazon
     tags: always
     package:
-      update_only: yes
+      # update_only: yes
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Amazon"
 
   - name: Install updates (ubuntu)
     tags: always
     apt: 
-      upgrade: dist
+      # upgrade: dist
       update_cache: yes
+    changed_when: false
     when: ansible_distribution == "Ubuntu"
+
+#creating ansible user across servers
+- hosts: all
+  become: true
+  tasks:
+
+  # - name: create simone user
+  #   tags: always
+  #   user:
+  #     name: simone
+  #     groups: root
+
+  - name: add ssh key for simone
+    tags: always
+    authorized_key:
+      user: simone
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCHOdJ8/fMsWMyIqH3rSVJlbHWwsw/82NBWwVZEGcHVB48bKxq1tK9koUnZkSyMFWFVGn0nZ23ndkFOI4pmxYciQZ9ctoC2k2Js2MVJWxcDgywoz0OgAfKgEqy7BSXEPdZztjoS7hBNHG9+1z4G2tWexuNQvaGYNMKdPmbJ4bk3MtkFf35V5NJwDpE/yTSNtmrZJpu21AXUSDdNq14aIyJXzTP31uIPoCNZ3kRFKkQJBnOrlxvwOs53eBLySmRUB2r0DuwAC7vKbWkSU1X7L6GpukAhnuJ80b9+vSNKGwvLRM1rdUoqGK0wBtoFKBeKd8JaFfnjyq+RH+N+8whcPc9v udacity"
+
+  # - name: add sudoers file for simone
+  #   tags: always
+  #   copy:
+  #     src: sudoer_simone
+  #     dest: /etc/sudoers.d/simone
+  #     owner: root
+  #     group: root
+  #     mode: 0440
+
+#################################################################
+
 
 - hosts: web_servers
   become: true
@@ -39,6 +70,7 @@
       - php
       state: latest
     when: ansible_distribution == "Amazon"
+
 
   - name: copy default html file for site
     tags: apache, apache2,httpd
@@ -76,3 +108,31 @@
     package:
       name: samba
       state: latest
+
+  - name: Start httpd (Amazon)
+    become: true
+    tags: centos,apache,httpd
+    service:
+      name: httpd
+      state: started
+      enabled: yes
+    when: ansible_distribution == "Amazon"
+
+
+- hosts: workstation
+  become: true
+  tasks:
+
+  - name: install unzip
+    package: 
+      name: unzip
+  
+  - name: install terraform
+    unarchive: 
+      src: https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+      dest: /usr/local/bin
+      remote_src: yes
+      mode: 0755
+      owner: root
+      grooup: root
+
