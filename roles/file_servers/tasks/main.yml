@@ -1,0 +1,14 @@
+- name: install samba package
+  tags: samba
+  package:
+    name: samba
+    state: latest
+
+- name: Start httpd (Amazon)
+  become: true
+  tags: centos,apache,httpd
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  when: ansible_distribution == "Amazon"

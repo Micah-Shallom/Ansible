@@ -8,7 +8,7 @@ ubuntu@34.238.117.206
 [file_servers]
 ec2-user@3.84.103.80
 
-[workstation]
+[workstations]
 
 [all]
 ubuntu@54.211.80.35
